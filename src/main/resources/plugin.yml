@@ -1,0 +1,70 @@
+name: GachaCraft
+version: 4
+main: gachacraft.gachacraft.GachaCraft
+api-version: 1.18
+load: STARTUP
+authors: [ C1nn4 ]
+prefix: gachacraft
+description: This plugin creates a Gacha system in Minecraft where the user spends an item and gets a randomized item output. It is highly configurable and therefore the cost can be modified as well as the rewards.
+commands:
+  gacha:
+    description: Play a gacha game.
+    usage: /gacha <gacha name>
+    permissions:
+      - gachacraft.gacha
+  creategacha:
+    description: Create a new gacha game.
+    usage: /creategacha <gacha name> <cost> <currency material>
+    permissions:
+      - gachacraft.admin
+  addgachaitem:
+    description: Add an item to a gacha game's reward list.
+    usage: /addgachaitem <gacha name>
+    permissions:
+      - gachacraft.admin
+  setgachacost:
+    description: Set the cost of a gacha game.
+    usage: /setgachacost <gacha name> <amount>
+    permissions:
+      - gachacraft.admin
+  setgachacurrency:
+    description: Set the currency of a gacha game.
+    usage: /setgachacurrency <gacha name>
+    permissions:
+      - gachacraft.admin
+  listgachas:
+    description: List all existing gacha games.
+    usage: /listgachas
+    permissions:
+      - gachacraft.gacha
+  removegacha:
+    description: Remove a gacha game and all its rewards.
+    usage: /removegacha <gacha name>
+    permissions:
+      - gachacraft.admin
+  removegachaitem:
+    description: Remove an item from a gacha game's reward list.
+    usage: /removegachaitem <gacha name>
+    permissions:
+      - gachacraft.admin
+  gachahelp:
+    description: Display a list of available gacha commands.
+    usage: /gachahelp
+    permissions:
+      - gachacraft.gacha
+      - addgachaitem:
+          description: Add an item to the reward list of a gacha game.
+          usage: /addgachaitem <gacha name> <chance>
+          permissions:
+            - gachacraft.admin
+          executor: player
+permissions:
+  gachacraft.admin:
+    description: Gives access to all GachaCraft admin commands.
+    default: op
+  gachacraft.gacha:
+    description: Gives access to the /gacha command.
+    default: true
+  gachacraft.*:
+    description: Gives access to all GachaCraft commands.
+    default: op
