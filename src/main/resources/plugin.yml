@@ -52,18 +52,17 @@ commands:
     usage: /gachahelp
     permissions:
       - gachacraft.gacha
-      - addgachaitem:
-          description: Add an item to the reward list of a gacha game.
-          usage: /addgachaitem <gacha name> <chance>
-          permissions:
-            - gachacraft.admin
-          executor: player
+  addgachaitem:
+    description: Add an item to the reward list of a gacha game.
+    usage: /addgachaitem <gacha name> <chance>
+    permissions:
+      - gachacraft.admin
 permissions:
   gachacraft.admin:
     description: Gives access to all GachaCraft admin commands.
     default: op
   gachacraft.gacha:
-    description: Gives access to the /gacha command.
+    description: Gives access to /gacha /gachahelp and /listgachas.
     default: true
   gachacraft.*:
     description: Gives access to all GachaCraft commands.
