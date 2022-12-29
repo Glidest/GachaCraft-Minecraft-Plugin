@@ -1,5 +1,5 @@
 name: GachaCraft
-version: 4
+version: 6
 main: gachacraft.gachacraft.GachaCraft
 api-version: 1.18
 load: STARTUP
@@ -14,7 +14,7 @@ commands:
       - gachacraft.gacha
   creategacha:
     description: Create a new gacha game.
-    usage: /creategacha <gacha name> <cost> <currency material>
+    usage: /creategacha <gacha name> <cost> [currency material]
     permissions:
       - gachacraft.admin
   addgachaitem:

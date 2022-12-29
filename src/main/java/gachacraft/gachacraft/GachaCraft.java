@@ -103,29 +103,63 @@ public final class GachaCraft extends JavaPlugin {
                 sender.sendMessage("You do not have permission to use this command!");
                 return true;
             }
-            if (args.length < 3) {
-                sender.sendMessage("Usage: /creategacha <gacha name> <cost> <currency material>");
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("Only players can use this command!");
+                return true;
+            }
+            Player player = (Player) sender;
+            if (args.length < 2) {
+                player.sendMessage("Usage: /creategacha <gacha name> <cost> [currency material]");
                 return true;
             }
             String gachaName = args[0];
-            try {
-                int cost = Integer.parseInt(args[1]);
-                Material currencyMaterial = Material.getMaterial(args[2].toUpperCase());
-                if (currencyMaterial == null) {
-                    sender.sendMessage("Invalid currency material: " + args[2]);
-                    return true;
-                }
-                ItemStack currency = new ItemStack(currencyMaterial);
-                gachas.put(gachaName, new ArrayList<>());
-                costs.put(gachaName, cost);
-                currencies.put(gachaName, currency);
-                sender.sendMessage("Gacha game '" + gachaName + "' created with cost " + cost + " and currency " + currencyMaterial.name() + "!");
-            } catch (NumberFormatException ex) {
-                sender.sendMessage("Invalid cost: " + args[1]);
+            if (gachas.containsKey(gachaName)) {
+                player.sendMessage("Gacha game already exists: " + gachaName);
                 return true;
             }
+            try {
+                int cost = Integer.parseInt(args[1]);
+                if (cost < 1) {
+                    player.sendMessage("Cost must be at least 1!");
+                    return true;
+                }
+                ItemStack currency = null;
+                if (args.length >= 3) {
+                    // The currency material argument was specified
+                    try {
+                        Material currencyMaterial = Material.getMaterial(args[2]);
+                        if (currencyMaterial == null) {
+                            player.sendMessage("Invalid currency material: " + args[2]);
+                            return true;
+                        }
+                        currency = new ItemStack(currencyMaterial);
+                    } catch (IllegalArgumentException e) {
+                        player.sendMessage("Invalid currency material: " + args[2]);
+                        return true;
+                    }
+                } else {
+                    // The currency material argument was not specified, use the item in the player's hand
+                    ItemStack heldItem = player.getInventory().getItemInMainHand();
+                    if (heldItem == null || heldItem.getType() == Material.AIR) {
+                        player.sendMessage("You must be holding an item in your hand to use it as the currency for the gacha game!");
+                        return true;
+                    }
+                    currency = heldItem.clone();
+                    // Set the amount of the currency to 1, since we only need one of it to play the gacha game
+                    currency.setAmount(1);
+                }
+                // Create a new empty reward list for the gacha game
+                List<ItemStack> rewards = new ArrayList<>();
+                // Add the gacha game to the maps
+                gachas.put(gachaName, rewards);
+                costs.put(gachaName, cost);
+                currencies.put(gachaName, currency);
+                player.sendMessage("Created gacha game: " + gachaName + " (cost: " + cost + ", currency: " + currency.getType().name() + ")");
+                return true;
+            } finally {
 
-            return true;
+            }
+
         } else     if (command.getName().equalsIgnoreCase("addgachaitem")) {
             // Check if the sender has the required permission
             if (!sender.hasPermission("gachacraft.admin")) {

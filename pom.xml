@@ -6,7 +6,7 @@
 
     <groupId>GachaCraft</groupId>
     <artifactId>GachaCraft</artifactId>
-    <version>v5</version>
+    <version>v6</version>
     <packaging>jar</packaging>
 
     <name>GachaCraft</name>
