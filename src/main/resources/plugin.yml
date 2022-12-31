@@ -1,5 +1,5 @@
 name: GachaCraft
-version: 6
+version: 7
 main: gachacraft.gachacraft.GachaCraft
 api-version: 1.18
 load: STARTUP
@@ -52,11 +52,6 @@ commands:
     usage: /gachahelp
     permissions:
       - gachacraft.gacha
-  addgachaitem:
-    description: Add an item to the reward list of a gacha game.
-    usage: /addgachaitem <gacha name> <chance>
-    permissions:
-      - gachacraft.admin
 permissions:
   gachacraft.admin:
     description: Gives access to all GachaCraft admin commands.

@@ -45,7 +45,7 @@ public final class GachaCraft extends JavaPlugin {
             sender.sendMessage("/gachahelp - Display this help message.");
             if (sender.hasPermission("gachacraft.admin")) {
                 sender.sendMessage("/creategacha <gacha name> <cost> <currency material> - Create a new gacha game.");
-                sender.sendMessage("/addgachaitem <gacha name> <chance>- Add the item in your hand to the reward list of a gacha game with the specified chance.");
+                sender.sendMessage("/addgachaitem <gacha name> - Add the item in your hand to the reward list of a gacha game with the specified chance.");
                 sender.sendMessage("/setgachacost <gacha name> <amount> - Set the cost of a gacha game.");
                 sender.sendMessage("/setgachacurrency <gacha name> - Set the currency of a gacha game to the item in your hand.");
                 sender.sendMessage("/listgachas - List all existing gacha games.");
@@ -160,7 +160,7 @@ public final class GachaCraft extends JavaPlugin {
 
             }
 
-        } else     if (command.getName().equalsIgnoreCase("addgachaitem")) {
+        } else             if (command.getName().equalsIgnoreCase("addgachaitem")) {
             // Check if the sender has the required permission
             if (!sender.hasPermission("gachacraft.admin")) {
                 sender.sendMessage("You do not have permission to use this command!");
@@ -171,8 +171,8 @@ public final class GachaCraft extends JavaPlugin {
                 return true;
             }
             Player player = (Player) sender;
-            if (args.length < 2) {
-                player.sendMessage("Usage: /addgachaitem <gacha name> <chance>");
+            if (args.length < 1) {
+                player.sendMessage("Usage: /addgachaitem <gacha name>");
                 return true;
             }
             String gachaName = args[0];
@@ -183,23 +183,14 @@ public final class GachaCraft extends JavaPlugin {
             }
             ItemStack heldItem = player.getInventory().getItemInMainHand();
             if (heldItem == null || heldItem.getType() == Material.AIR) {
-                player.sendMessage("You must be holding an item in your hand to add it to the gacha reward list!");
+                player.sendMessage("You must be holding an item in your hand to add it as a reward to the gacha game!");
                 return true;
             }
-            try {
-                double chance = Double.parseDouble(args[1]);
-                if (chance < 0 || chance > 100) {
-                    player.sendMessage("Chance must be between 0 and 100!");
-                    return true;
-                }
-                int odds = (int) (100 / chance);
-                ItemStack reward = heldItem.clone();
-                reward.setAmount(odds);
-                rewards.add(reward);
-                player.sendMessage("Added " + heldItem.getType().name() + " to the reward list of the " + gachaName + " gacha game with a " + chance + "% chance of receiving it!");
-            } catch (NumberFormatException e) {
-                player.sendMessage("Invalid chance: " + args[1]);
-            }
+            ItemStack reward = heldItem.clone();
+            // Set the amount of the reward to 1, since we only want to add a single item as the reward
+            reward.setAmount(1);
+            rewards.add(reward);
+            player.sendMessage("Added " + reward.getType().name() + " as areward to the " + gachaName + " gacha game.");
             return true;
         }
 
